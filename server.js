@@ -1,4 +1,5 @@
 var express = require('express')
+var next = require('next')
 var graphqlHTTP = require('express-graphql')
 var {buildSchema} = require('graphql')
 var schema = buildSchema(`
@@ -25,10 +26,29 @@ var root = { hello: ()=>authors.filter( au => au.id!=1 ), authors, author: ({id}
 	return authors.find(author => author.id===id)
 	} }
 
+const dev = process.env.NODE_ENV !== 'production'
+const app = ({dev})
+app
+	.prepare()
+	.then(()=>{
+		const server = express()
+		server.use('graphql', graphqlHTTP({
+			schema: schema,
+			rootValue: root,
+			graphiql: true,
+		}));
+		server.get('/', (req, res)=>{
+			app.render(req, res, '/myReact', {})
+		})
+		server.listen(4000, ()=>console.log('server listen at port 4000'))
+	})
+
+/*
 var app = express()
 app.use('/graphql',graphqlHTTP({
 	schema: schema,
 	rootValue: root,
 	graphiql: true,
 }));
-app.listen(4000, ()=>console.log('Server Listen at port 4000'))
+app.listen(4000, ()=>consoLE.LOG('sERVER Listen at port 4000'))
+*/

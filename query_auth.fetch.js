@@ -21,6 +21,8 @@ let graphQLParams = {
 	"operationName":"searchAuthor"
 }
 
+function fetchData() {
+	
 fetch('http://localhost:4000/graphql?', {
 	        method: 'post',
 	        headers: {
@@ -32,4 +34,4 @@ fetch('http://localhost:4000/graphql?', {
 	      }).then(function (response) {
 		              response.json().then(data=>console.log(data))
 		            });
-
+}
