@@ -28,6 +28,8 @@ var root = { hello: ()=>authors.filter( au => au.id!=1 ), authors, author: ({id}
 
 const dev = process.env.NODE_ENV !== 'production'
 const app = next({dev})
+const handle = app.getRequestHandler()
+
 app
 	.prepare()
 	.then(()=>{
@@ -39,6 +41,9 @@ app
 		}));
 		server.get('/', (req, res)=>{
 			app.render(req, res, '/react', {})
+		})
+		server.get('*', (req, res) => {
+			return handle(req, res)
 		})
 		server.listen(4000, ()=>console.log('server listen at port 4000'))
 	})

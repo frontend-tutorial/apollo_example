@@ -6,6 +6,9 @@ You can run the express server with following command `node server.js`.
 Also you can run the following command `now init apollo` to fetch the example to your local machine.
 
 ## Graphql Test Step
+### Test using browser
+* run command `npm install`
+* run command `node server.js`
 * Open the url [localhost:4000/graphql](http://localhost:4000/graphql)
 * Try the query blow
 ```
@@ -28,6 +31,47 @@ query searchAuthor($id:Int! = 1){
 }
 ```
 
+### Test using javascript
+We can post the query to server to get JSON
+```javascript
+    graphQLParams = {
+      "query": `query searchAuthor($id:Int! = 1){
+      hello {
+        id
+        firstName
+        lastName
+      }
+      authors {
+        id
+        firstName
+      }
+      
+      author(id:$id) {
+        id
+        firstName
+      }
+    
+    }
+    `,
+      "variables": { "id": 3 },
+      "operationName": "searchAuthor"
+    }
+    
+    fetch('http://localhost:4000/graphql?', {
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(graphQLParams),
+      credentials: 'include',
+    })
+```
+* run command `npm install`
+* run command `node server.js`
+* Open the url [localhost:4000](http://localhost:4000)
+* Click the button `Fetch Data and show JSON`
+ 
 
 ## Apollo Server
 If you need to know more about Apollo Server example features the [`now.json` configuration file](https://zeit.co/docs/v2/deployments/configuration) below.
