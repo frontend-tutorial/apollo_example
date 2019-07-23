@@ -17,8 +17,8 @@ var schema = buildSchema(`
 
 const authors = [
 	{id: 1, firstName: 'Derek', lastName: 'Ericsson'},
-	{id: 2, firstName: 'Derek', lastName: 'Ericsson'},
-	{id: 3, firstName: 'Derek', lastName: 'Ericsson'},
+	{id: 2, firstName: 'Locus', lastName: 'Jobs'},
+	{id: 3, firstName: 'Danish', lastName: 'Lin'},
 ]
 
 var root = { hello: ()=>authors.filter( au => au.id!=1 ), authors, author: ({id})=>{
@@ -27,18 +27,18 @@ var root = { hello: ()=>authors.filter( au => au.id!=1 ), authors, author: ({id}
 	} }
 
 const dev = process.env.NODE_ENV !== 'production'
-const app = ({dev})
+const app = next({dev})
 app
 	.prepare()
 	.then(()=>{
 		const server = express()
-		server.use('graphql', graphqlHTTP({
+		server.use('/graphql', graphqlHTTP({
 			schema: schema,
 			rootValue: root,
 			graphiql: true,
 		}));
 		server.get('/', (req, res)=>{
-			app.render(req, res, '/myReact', {})
+			app.render(req, res, '/react', {})
 		})
 		server.listen(4000, ()=>console.log('server listen at port 4000'))
 	})
